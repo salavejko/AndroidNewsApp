@@ -1,9 +1,9 @@
-package com.salavejko.androidnewsapp.data.source.assets
+package com.salavejko.androidnewsapp.data.source.local
 
 import android.content.Context
-import com.google.gson.Gson
 import com.salavejko.androidnewsapp.data.model.ArticleDto
 import com.salavejko.androidnewsapp.data.model.ArticleListDto
+import com.squareup.moshi.Moshi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import jakarta.inject.Named
@@ -15,11 +15,13 @@ class AssetsNewsSource @Inject constructor(
     @ApplicationContext val context: Context,
     @Named("IODispatcher")
     private val ioDispatcher: CoroutineDispatcher,
-) {
+): NewsDataSource {
 
-    suspend fun readArticles(): List<ArticleDto> = withContext(ioDispatcher) {
+    override suspend fun getArticles(): List<ArticleDto> = withContext(ioDispatcher) {
         val json = context.assets.open(ARTICLES_SOURCE).bufferedReader().use { it.readText() }
-        Gson().fromJson(json, ArticleListDto::class.java).articles
+        val moshi = Moshi.Builder().build()
+        val adapter = moshi.adapter(ArticleListDto::class.java)
+        adapter.fromJson(json)?.articles ?: emptyList()
     }
 
     companion object {

@@ -66,8 +66,9 @@ dependencies {
     //Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    //Gson
-    implementation(libs.gson)
+    //Moshi
+    implementation(libs.moshi.kotlin.v1152)
+    ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)

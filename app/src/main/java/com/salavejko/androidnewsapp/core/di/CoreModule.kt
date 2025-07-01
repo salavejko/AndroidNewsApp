@@ -1,7 +1,8 @@
 package com.salavejko.androidnewsapp.core.di
 
 import com.salavejko.androidnewsapp.data.repository.ArticlesRepositoryImpl
-import com.salavejko.androidnewsapp.data.source.assets.AssetsNewsSource
+import com.salavejko.androidnewsapp.data.source.local.AssetsNewsSource
+import com.salavejko.androidnewsapp.data.source.local.NewsDataSource
 import com.salavejko.androidnewsapp.domain.repository.ArticlesRepository
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,13 @@ object CoreModule {
 
     @Provides
     fun provideArticlesRepository(
-        assetsNewsSource: AssetsNewsSource,
-    ): ArticlesRepository = ArticlesRepositoryImpl(assetsNewsSource)
+        @Named("AssetsNewsSource")
+        newsDataSource: NewsDataSource,
+    ): ArticlesRepository = ArticlesRepositoryImpl(newsDataSource)
 
+    @Provides
+    @Named("AssetsNewsSource")
+    fun provideNewsSource(assetsNewsSource: AssetsNewsSource): NewsDataSource = assetsNewsSource
+
+    //TODO we can add different sources here e.g. remote, mock, assets or local
 }

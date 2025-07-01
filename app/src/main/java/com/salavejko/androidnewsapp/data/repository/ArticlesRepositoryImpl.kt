@@ -1,16 +1,17 @@
 package com.salavejko.androidnewsapp.data.repository
 
 import com.salavejko.androidnewsapp.data.model.PlaceholderColor
-import com.salavejko.androidnewsapp.data.source.assets.AssetsNewsSource
+import com.salavejko.androidnewsapp.data.source.local.NewsDataSource
 import com.salavejko.androidnewsapp.domain.model.Article
 import com.salavejko.androidnewsapp.domain.repository.ArticlesRepository
 import javax.inject.Inject
 
 class ArticlesRepositoryImpl @Inject constructor(
-    val assetsArticlesSource: AssetsNewsSource
+    val dataSource: NewsDataSource,
+    //val local: NewsLocalSource todo Example of local source that can be added later
 ): ArticlesRepository {
     override suspend fun getArticles(): List<Article> {
-        return assetsArticlesSource.readArticles().map {
+        return dataSource.getArticles().map {
             Article(
                 it.title,
                 it.description,
