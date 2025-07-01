@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import jakarta.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import kotlin.jvm.java
 
 class AssetsNewsSource @Inject constructor(
@@ -16,9 +17,9 @@ class AssetsNewsSource @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) {
 
-    suspend fun readArticles(): List<ArticleDto> = with(ioDispatcher) {
+    suspend fun readArticles(): List<ArticleDto> = withContext(ioDispatcher) {
         val json = context.assets.open(ARTICLES_SOURCE).bufferedReader().use { it.readText() }
-        return Gson().fromJson(json, ArticleListDto::class.java).articles
+        Gson().fromJson(json, ArticleListDto::class.java).articles
     }
 
     companion object {
