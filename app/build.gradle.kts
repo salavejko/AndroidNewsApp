@@ -66,16 +66,8 @@ dependencies {
     //Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    //Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.moshi.kotlin)
+    //Gson
+    implementation(libs.gson)
 
-    //Work Manager
-    implementation(libs.androidx.work.runtime.ktx)
-
-    //Room
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.androidx.room.ktx)
+    implementation(libs.coil.compose)
 }
